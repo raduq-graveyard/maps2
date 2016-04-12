@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Created by Raduq on 04/04/2016.
  */
-public class Activity {
+public class Activity implements Comparable<Activity> {
 
     private String name;
 
@@ -35,5 +35,10 @@ public class Activity {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public int compareTo(Activity o) {
+        return o.equals(this) ? 1 : 0;
     }
 }

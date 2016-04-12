@@ -4,10 +4,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -94,16 +91,56 @@ public class App {
     }
 
     @Test
-    public void code3FlatMap(){
+    public void code3FlatMap() {
         //primeiro adiciono atividades à todas as pessoas
         people = people.stream().map(person -> person.addActivity(new Activity("jogo"))).collect(Collectors.toList());
-        people.addAll( people.stream().map(person -> person.addActivity(new Activity("balé"))).collect(Collectors.toList()));
-        people.addAll(  people.stream().map(person -> person.addActivity(new Activity("corrida"))).collect(Collectors.toList()));
+        people.addAll(people.stream().map(person -> person.addActivity(new Activity("balé"))).collect(Collectors.toList()));
+        people.addAll(people.stream().map(person -> person.addActivity(new Activity("corrida"))).collect(Collectors.toList()));
 
         Set<Activity> activities = people.stream()
                 .flatMap(person -> person.getActivities().stream())
                 .filter(act -> !"jogo".equals(act.getName()))
                 .collect(Collectors.toSet());
         System.out.println(activities.size() + " atividades encontradas (excluindo jogo).");
+    }
+
+    @Test
+    public void code4Sort() throws Exception {
+        //primeiro adiciono atividades à todas as pessoas
+        people = people.stream().map(person -> person.addActivity(new Activity("jogo"))).collect(Collectors.toList());
+        people.addAll(people.stream().map(person -> person.addActivity(new Activity("balé"))).collect(Collectors.toList()));
+        people.addAll(people.stream().map(person -> person.addActivity(new Activity("corrida"))).collect(Collectors.toList()));
+        people.addAll(people.stream().map(person -> person.addActivity(new Activity("caminhar"))).collect(Collectors.toList()));
+        people.addAll(people.stream().map(person -> person.addActivity(new Activity("piscina"))).collect(Collectors.toList()));
+        people.addAll(people.stream().map(person -> person.addActivity(new Activity("praia"))).collect(Collectors.toList()));
+
+        String acts = people.stream()
+                .flatMap(person -> person.getActivities().stream())
+                .filter(act -> !"jogo".equals(act.getName()))
+                .distinct()
+                .map(Activity::getName)
+                .sorted()
+                .collect(Collectors.joining(","));
+        System.out.println("Atividades em ordem natural: " + acts);
+    }
+
+    @Test
+    public void code4SortInverse() throws Exception {
+        //primeiro adiciono atividades à todas as pessoas
+        people = people.stream().map(person -> person.addActivity(new Activity("jogo"))).collect(Collectors.toList());
+        people.addAll(people.stream().map(person -> person.addActivity(new Activity("balé"))).collect(Collectors.toList()));
+        people.addAll(people.stream().map(person -> person.addActivity(new Activity("corrida"))).collect(Collectors.toList()));
+        people.addAll(people.stream().map(person -> person.addActivity(new Activity("caminhar"))).collect(Collectors.toList()));
+        people.addAll(people.stream().map(person -> person.addActivity(new Activity("piscina"))).collect(Collectors.toList()));
+        people.addAll(people.stream().map(person -> person.addActivity(new Activity("praia"))).collect(Collectors.toList()));
+
+        String acts = people.stream()
+                .flatMap(person -> person.getActivities().stream())
+                .filter(act -> !"jogo".equals(act.getName()))
+                .distinct()
+                .map(Activity::getName)
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.joining(","));
+        System.out.println("Atividades em ordem inversa: " + acts);
     }
 }
